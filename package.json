@@ -1,0 +1,26 @@
+{
+  "name": "sample-validate-username",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.61.1",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^26.1.0",
+    "eslint": "^10.6.0",
+    "tsx": "^4.22.5",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.62.1",
+    "vitest": "^2.1.0"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.11.1"
+  }
+}

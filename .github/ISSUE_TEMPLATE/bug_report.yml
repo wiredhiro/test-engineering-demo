@@ -1,0 +1,86 @@
+name: 不具合報告
+description: テストで見つかった不具合を登録する
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        テストで見つかった不具合を報告します。
+        **再現手順**は、開発者が手元で同じ現象を出せるように具体的に書いてください（出せないと直せません）。
+
+  - type: input
+    id: viewpoint
+    attributes:
+      label: 関連観点ID
+      description: 観点表のどの観点で見つかったか（例：U-06 / I-03）。無ければ空欄可。
+      placeholder: U-06
+    validations:
+      required: false
+
+  - type: textarea
+    id: phenomenon
+    attributes:
+      label: 現象（何が起きたか）
+      placeholder: 20文字ちょうどの名前が登録できない
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-actual
+    attributes:
+      label: 期待する結果 / 実際の結果
+      value: |
+        - 期待：
+        - 実際：
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 再現手順
+      description: 開発者が手元で再現できるように、順番に書く。
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: 重要度（どれくらい深刻か）
+      options:
+        - 高（データ消失・機能停止など）
+        - 中
+        - 低（見た目のズレなど）
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 優先度（どれくらい急ぐか）
+      options:
+        - 高（よく使う画面・主要動線）
+        - 中
+        - 低
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: 環境
+      description: ブラウザ・OS・バージョンなど（分かれば）
+      placeholder: Chrome 130 / macOS
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 補足（スクリーンショット・ログなど）
+      description: あれば貼る。無ければ空欄可。
+    validations:
+      required: false

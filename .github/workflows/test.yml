@@ -1,0 +1,49 @@
+# プッシュ・PR のたびに、品質チェックを自動で走らせる（CI）。
+# fail fast：まず速い静的チェック（Lint・型）を門番にし、通ったら重いテストへ進む。
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # ① 静的チェック（秒で終わる。ここで落ちたら以降は走らせない）
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint       # ESLint：危ういコード・未使用変数など
+      - run: npm run typecheck   # tsc --noEmit：型の不整合（＝コンパイルが通るかの確認も兼ねる）
+      # Next.js アプリなら、ここに本番ビルド確認（npx next build）を足す
+
+  # ② 単体テスト + 結合テスト（速い。static が通ってから）
+  test:
+    needs: static
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+
+  # ③ E2E テスト（遅い。ブラウザが要るので別ジョブ。static が通ってから）
+  e2e:
+    needs: static
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e
